@@ -45,6 +45,9 @@ jobs:
       - name: Upload test report
         if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v4
+        with:
+          path: .
+          name: test-report
 
   build:
     needs: test
@@ -69,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-files
-          path: dist
+          path: .
 
   deploy:
     needs: build
@@ -81,7 +84,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist-files
-          path: ./dist
+          path: .
       - name: Output contents
         run: ls
       - name: Deploy site
