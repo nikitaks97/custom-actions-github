@@ -1,0 +1,18 @@
+name: get and cache dependencies
+description: |
+  This action gets and caches dependencies for a project.
+  It uses the `actions/cache` action to cache the dependencies.
+  The cache key is based on the hash of the `package.json` file.
+  The cache is restored if it exists, otherwise it is created.
+runs:
+  using: 'composite'
+  steps:
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
