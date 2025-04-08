@@ -18,10 +18,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: 01 Starting Project
+        working-directory: 01+Starting+Project
       - name: Lint code
         run: npm run lint
-        working-directory: 01 Starting Project
+        working-directory: 01+Starting+Project
 
   test:
     runs-on: ubuntu-latest
@@ -37,11 +37,11 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: 01 Starting Project
+        working-directory: 01+Starting+Project
       - name: Test code
         id: run-tests
         run: npm run test
-        working-directory: 01 Starting Project
+        working-directory: 01+Starting+Project
       - name: Upload test report
         if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v3
@@ -64,10 +64,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: 01 Starting Project
+        working-directory: 01+Starting+Project
       - name: Build website
         run: npm run build
-        working-directory: 01 Starting Project
+        working-directory: 01+Starting+Project
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
