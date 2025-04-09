@@ -10,7 +10,7 @@ jobs:
       - name: Get code
         uses: actions/checkout@v4
       - name: Load and cache dependencies
-        uses: ./actions/cached-deps
+        uses: ./cached-deps/action.yml
       - name: Lint code
         run: npm run lint
         working-directory: 01+Starting+Project
