@@ -1,44 +1,68 @@
 name: Deployment using custom action
+
 on:
   push:
     branches:
       - main
+  workflow_dispatch:  # 👈 Manual trigger added
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
         uses: actions/checkout@v4
-      - name: Load and cache dependencies
-        uses: ./cached-deps
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            01+Starting+Project/node_modules
+          key: deps-node-modules-${{ hashFiles('01+Starting+Project/package-lock.json') }}
+          restore-keys: |
+            deps-node-modules-
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: 01+Starting+Project
+
       - name: Lint code
         run: npm run lint
-        working-directory: 01+Starting+Project #test
+        working-directory: 01+Starting+Project
 
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
         uses: actions/checkout@v4
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            ~/.npm
+            01+Starting+Project/node_modules
+          key: deps-node-modules-${{ hashFiles('01+Starting+Project/package-lock.json') }}
+          restore-keys: |
+            deps-node-modules-
+
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
         working-directory: 01+Starting+Project
+
       - name: Test code
         id: run-tests
         run: npm run test
         working-directory: 01+Starting+Project
+
       - name: Upload test report
         if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
-          path: .
+          path: 01+Starting+Project/test-results
           name: test-report
 
   build:
@@ -47,24 +71,31 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            ~/.npm
+            01+Starting+Project/node_modules
+          key: deps-node-modules-${{ hashFiles('01+Starting+Project/package-lock.json') }}
+          restore-keys: |
+            deps-node-modules-
+
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
         working-directory: 01+Starting+Project
+
       - name: Build website
         run: npm run build
         working-directory: 01+Starting+Project
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: dist-files
-          path: .
+          path: 01+Starting+Project/dist
 
   deploy:
     needs: build
@@ -72,12 +103,15 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4
+
       - name: Get build artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist-files
-          path: .
+          path: 01+Starting+Project/dist
+
       - name: Output contents
-        run: ls
+        run: ls -R 01+Starting+Project/dist
+
       - name: Deploy site
         run: echo "Deploying..."
