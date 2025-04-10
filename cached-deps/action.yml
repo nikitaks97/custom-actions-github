@@ -4,15 +4,16 @@ description: |
   It uses the `actions/cache` action to cache the dependencies.
   The cache key is based on the hash of the `package.json` file.
   The cache is restored if it exists, otherwise it is created.
-inputs:
-  caching:
+inputs:                                                #This allows someone using your action to optionally turn caching on or off by passing caching: 'false'.
+                                                       #By default, it's on.
+caching:
     description: 'whether cache dependencies or not'
     required: false
     default: 'true'
 outputs:
   used-cache:
     description:'whether cache was used or not'
-    value: ${{ steps.install.outputs.cache }}
+    value: ${{ steps.install.outputs.used-cache }}
 runs:
   using: 'composite'
   steps:
@@ -28,6 +29,6 @@ runs:
         id: install
         run: |
           npm ci
-          echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT 
+          echo "used-cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT 
           working-directory: 01+Starting+Project
         shell: bash 
