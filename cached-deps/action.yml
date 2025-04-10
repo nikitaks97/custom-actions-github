@@ -2,33 +2,36 @@ name: get and cache dependencies
 description: |
   This action gets and caches dependencies for a project.
   It uses the `actions/cache` action to cache the dependencies.
-  The cache key is based on the hash of the `package.json` file.
+  The cache key is based on the hash of the `package-lock.json` file.
   The cache is restored if it exists, otherwise it is created.
-inputs:                                                #This allows someone using your action to optionally turn caching on or off by passing caching: 'false'.
-                                                       #By default, it's on.
-caching:
-    description: 'whether cache dependencies or not'
+
+inputs:
+  caching:                                               # This allows someone using your action to optionally turn caching on or off by passing caching: 'false'.
+    description: 'Whether to cache dependencies or not'  # By default, it's on.
     required: false
     default: 'true'
+
 outputs:
   used-cache:
-    description:'whether cache was used or not'
+    description: 'Whether cache was used or not'
     value: ${{ steps.install.outputs.used-cache }}
-runs:                     #This tells GitHub it's a composite action, which is just a reusable group of steps.
-  using: 'composite'
+
+runs:
+  using: 'composite'                                     # This tells GitHub it's a composite action, which is just a reusable group of steps.
   steps:
-      - name: Cache dependencies                                  # When it runs: Only if caching input is 'true'.What it does: Tries to restore the NPM cache from a key based on the hash of package-lock.json.Why: If package-lock.json hasn't changed, this avoids a full npm ci.
-        if: inputs.caching == 'true'
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path:  ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies                                                 #When it runs: If the cache wasn't hit, or if caching is enabled.What it does:Runs npm ci — clean, deterministic install based on package-lock.json.Echoes whether the cache was used (true/false) as an output.Note: The working-directory ensures the install runs in the correct project folder
-        if: steps.cache.outputs.cache-hit != 'true' || inputs.caching == 'true'
-        id: install
-        run: |
-          npm ci
-          echo "used-cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT 
-          working-directory: 01+Starting+Project
-        shell: bash 
+    - name: Cache dependencies                           # When it runs: Only if caching input is 'true'.
+      if: inputs.caching == 'true'                       # What it does: Tries to restore the NPM cache from a key based on the hash of package-lock.json.
+      id: cache                                          
+      uses: actions/cache@v4                             # Why: If package-lock.json hasn't changed, this avoids a full npm ci.
+      with:
+        path: ~/.npm
+        key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies                         # When it runs: If the cache wasn't hit, or if caching is enabled.
+      if: steps.cache.outputs.cache-hit != 'true' || inputs.caching == 'true'
+      id: install                                        # What it does: Runs npm ci — clean, deterministic install based on package-lock.json.
+      run: |
+        npm ci
+        echo "used-cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT  # Echoes whether the cache was used (true/false) as an output.
+      working-directory: 01+Starting+Project             # Ensures the install runs in the correct project folder.
+      shell: bash
