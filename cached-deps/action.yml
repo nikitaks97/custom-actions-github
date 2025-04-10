@@ -14,17 +14,17 @@ outputs:
   used-cache:
     description:'whether cache was used or not'
     value: ${{ steps.install.outputs.used-cache }}
-runs:
+runs:                     #This tells GitHub it's a composite action, which is just a reusable group of steps.
   using: 'composite'
   steps:
-      - name: Cache dependencies
+      - name: Cache dependencies                                  # When it runs: Only if caching input is 'true'.What it does: Tries to restore the NPM cache from a key based on the hash of package-lock.json.Why: If package-lock.json hasn't changed, this avoids a full npm ci.
         if: inputs.caching == 'true'
         id: cache
         uses: actions/cache@v4
         with:
           path:  ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
+      - name: Install dependencies                                                 #When it runs: If the cache wasn't hit, or if caching is enabled.What it does:Runs npm ci — clean, deterministic install based on package-lock.json.Echoes whether the cache was used (true/false) as an output.Note: The working-directory ensures the install runs in the correct project folder
         if: steps.cache.outputs.cache-hit != 'true' || inputs.caching == 'true'
         id: install
         run: |
