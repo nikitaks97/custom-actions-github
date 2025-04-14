@@ -91,8 +91,3 @@ jobs:
         run: ls
       - name: Deploy site
         run: echo "Deploying to prod"
-information:
-  runs-on: ubuntu-latest
-  steps:
-    - name: run custom action
-      uses: ./deploy-s3-javascript
