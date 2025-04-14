@@ -36,7 +36,7 @@ jobs:
         run: echo " cache used ? ${{ steps.cache-deps.outputs.used-cache }}"
       - name: Lint code
         run: npm run lint
-        working-directory: 01+Starting+Project
+        working-directory: 01_Starting_Project
 
   test:
     runs-on: ubuntu-latest
@@ -57,12 +57,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: 01+Starting+Project
+        working-directory: 01_Starting_Project
 
       - name: Test code
         id: run-tests
         run: npm run test
-        working-directory: 01+Starting+Project
+        working-directory: 01_Starting_Project
 
       - name: Upload test report
         if: failure() && steps.run-tests.outcome == 'failure'
@@ -91,11 +91,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: 01+Starting+Project
+        working-directory: 01_Starting_Project
 
       - name: Build website
         run: npm run build
-        working-directory: 01+Starting+Project
+        working-directory: 01_Starting_Project
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -114,10 +114,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist-files
-          path: 01+Starting+Project/dist
+          path: 01_Starting_Project
 
       - name: Output contents
-        run: ls -R 01+Starting+Project/dist
+        run: ls -R 01_Starting_Project/dist
 
   information:
     runs-on: ubuntu-latest
