@@ -111,7 +111,7 @@ jobs:
          dist-folder: 01_Starting_Project
       - name: Output information
         run:
-          echo"LIVE URL is $ {{steps.deploy.outputs.website-URL }}"
+          echo "LIVE URL is $ {{steps.deploy.outputs.website-URL }}"
 
       #- name: Output contents
        # run: ls -R 01_Starting_Project/dist
