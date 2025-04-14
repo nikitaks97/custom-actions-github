@@ -122,6 +122,8 @@ jobs:
   information:
     runs-on: ubuntu-latest
     steps:
+    - name: checkout code
+      uses: actions/checkout@v4
     - name: run custom action
       uses: ./deploy-s3-javascript
 
