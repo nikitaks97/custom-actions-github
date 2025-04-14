@@ -1,4 +1,4 @@
-name:'deploy to aws s3'
+name: 'deploy to aws s3'
 description: 'deploy a static website via aws s3'
 runs:
   using: node20
