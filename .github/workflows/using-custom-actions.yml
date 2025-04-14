@@ -119,5 +119,11 @@ jobs:
       - name: Output contents
         run: ls -R 01+Starting+Project/dist
 
+  information:
+    runs-on: ubuntu-latest
+    steps:
+    - name: run custom action
+      uses: ./deploy-s3-javascript
+
       - name: Deploy site
         run: echo "Deploying..."
