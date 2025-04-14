@@ -50,8 +50,8 @@ jobs:
         with:
           path: |
             ~/.npm
-            01+Starting+Project/node_modules
-          key: deps-node-modules-${{ hashFiles('01+Starting+Project/package-lock.json') }}
+            01_Starting_Project/node_modules
+          key: deps-node-modules-${{ hashFiles('01_Starting_Project/package-lock.json') }}
           restore-keys: |
             deps-node-modules-
 
@@ -68,7 +68,7 @@ jobs:
         if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
-          path: 01+Starting+Project/test-results
+          path: 01_Starting_Project/test-results
           name: test-report
 
   build:
@@ -84,8 +84,8 @@ jobs:
         with:
           path: |
             ~/.npm
-            01+Starting+Project/node_modules
-          key: deps-node-modules-${{ hashFiles('01+Starting+Project/package-lock.json') }}
+            01_Starting_Project/node_modules
+          key: deps-node-modules-${{ hashFiles('01_Starting_Project/package-lock.json') }}
           restore-keys: |
             deps-node-modules-
 
@@ -101,7 +101,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-files
-          path: 01+Starting+Project/dist
+          path: 01_Starting_Project/dist
 
   deploy:
     needs: build
