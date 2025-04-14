@@ -16,7 +16,8 @@ inputs:
     required: true
     default: 'dist'
  outputs:
-   website-URL: 'URL of the deployed website'
+   website-URL:
+    description: 'URL of the deployed website'
  runs:
     using: 'node16'
     main: 'main.js'
