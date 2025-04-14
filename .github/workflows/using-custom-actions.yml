@@ -125,5 +125,3 @@ jobs:
     - name: run custom action
       uses: ./deploy-s3-javascript
 
-      - name: Deploy site
-        run: echo "Deploying..."
