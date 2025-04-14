@@ -12,21 +12,6 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4
-
-     # - name: Cache dependencies
-      #  id: cache
-      #  uses: actions/cache@v4
-       # with:
-        #  path: |
-         #   ~/.npm
-          #  01+Starting+Project/node_modules
-         # key: deps-node-modules-${{ hashFiles('01+Starting+Project/package-lock.json') }}
-        #  restore-keys: |
-        #    deps-node-modules-
-
-     # - name: Install dependencies
-      #  run: npm ci
-      #  working-directory: 01+Starting+Project
       - name: use custom action
         id: cache-deps
         uses: ./cached-deps
