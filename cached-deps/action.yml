@@ -33,5 +33,5 @@ runs:
       run: |
         npm ci
         echo "used-cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT  # Echoes whether the cache was used (true/false) as an output.
-      working-directory: 01+Starting+Project             # Ensures the install runs in the correct project folder.
+      working-directory: 01_Starting_Project             # Ensures the install runs in the correct project folder.
       shell: bash
