@@ -101,8 +101,8 @@ jobs:
           name: dist-files
           path: 01_Starting_Project
 
-      - name: Output contents
-        run: ls -R 01_Starting_Project/dist
+      #- name: Output contents
+       # run: ls -R 01_Starting_Project/dist
 
   information:
     runs-on: ubuntu-latest
