@@ -3,3 +3,15 @@ description: 'deploy a static website via aws s3'
 runs:
   using: node20
   main: main.js
+inputs: 
+  bucket:
+    description: 'The region of the S3 bucket'
+    required: true
+  bucket-region:
+    description: 'The region of the S3 bucket'
+    required: false
+    default: 'us-east-1'
+
+  runs:
+    using: 'node16'
+    main: 'main.js'
